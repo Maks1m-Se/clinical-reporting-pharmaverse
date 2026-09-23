@@ -1,4 +1,4 @@
-# Roche ADS Programmer Coding Assessment
+# Clinical Reporting Project with Pharmaverse
 
 * [1. Overview](#1-overview)
 * [2. Repository structure](#2-repository-structure)
@@ -18,9 +18,8 @@ raw eCRF  ->  SDTM (Q1)  ->  ADaM (Q2)  ->  TLG (Q3)
                   +->  GenAI agent (Q4)
 ```
 
-The four questions walk one clinical data flow rather than sitting apart: each stage
-consumes the previous one, and the bonus agent branches off the SDTM layer because the
-spec sources its input from `pharmaversesdtm::ae` (see spec note 1).
+The four questions walk one clinical data flow: each stage
+works on top of the previous one, and the bonus agent branches off the SDTM layer`pharmaversesdtm::ae`.
 
 This repository contains my solutions to the Analytical Data Science (ADS) Programmer
 Coding Assessment. The assessment covers the pharmaverse ecosystem end to end: building a
@@ -43,7 +42,7 @@ as evidence that the script executes without errors.
 ## 2. Repository structure
 
 ```
-roche-ads-assessment/
+clinical-reporting-pharmaverse/
 ├── README.md                              this file
 ├── .gitignore                             R/OS/Python ignores + assessment materials
 ├── .gitattributes                         line-ending normalisation for future commits
