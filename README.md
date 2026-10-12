@@ -58,7 +58,8 @@ The project began as a one-week take-home coding assessment for a statistical pr
 role in pharma. That is why it is organised as four questions, why each question starts
 from the inputs the specification prescribed, and why
 [section 7](#7-notes-on-spec-decisions) records where the specification needed
-interpretation.
+interpretation. AI coding assistants were permitted and used throughout; I made every
+derivation decision and reviewed every output.
 
 ## 2. Repository structure
 
