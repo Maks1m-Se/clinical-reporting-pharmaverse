@@ -65,7 +65,7 @@ interpretation.
 ```
 clinical-reporting-pharmaverse/
 ├── README.md                              this file
-├── .gitignore                             R/OS/Python ignores + assessment materials
+├── .gitignore                             R/OS/Python ignores, local-only files
 ├── .gitattributes                         line-ending normalisation for future commits
 ├── question_1_sdtm/
 │   ├── 01_create_ds_domain.R              builds the SDTM DS domain
@@ -95,9 +95,8 @@ clinical-reporting-pharmaverse/
     └── run_log.txt                        console transcript of a real LLM run
 ```
 
-Folder and file names follow the assessment specification **verbatim**, including the
-inconsistency that Questions 1 and 3 use numeric script prefixes while Question 2 does
-not. This is intentional, not an oversight.
+Folder and file names follow the original specification **verbatim**, which is why
+Questions 1 and 3 use numeric script prefixes and Question 2 does not.
 
 ## 3. Reproducing everything
 
@@ -151,7 +150,7 @@ Every log committed to this repository is the output of exactly these commands.
 | **How to run** | `Rscript question_3_tlg/01_create_ae_summary_table.R > question_3_tlg/run_log_01.txt 2>&1` and `Rscript question_3_tlg/02_create_visualizations.R > question_3_tlg/run_log_02.txt 2>&1` — one log per script, see the log convention below. |
 | **Log evidence** | `question_3_tlg/run_log_01.txt` and `question_3_tlg/run_log_02.txt` |
 
-### Question 4 — GenAI clinical data assistant (Python, bonus)
+### Question 4 — GenAI clinical data assistant (Python)
 
 | | |
 |---|---|
@@ -181,7 +180,7 @@ in the loaded dataframe before it is ever used to index it.
 **Interface.** The agent is exercised through `test_agent.py`, which runs three fixed
 example queries — one per mappable column — and prints each question, its parsed
 `QuerySpec`, the parse source, the subject count and the matching IDs. There is no
-interactive prompt or REPL: the assessment asks for a block of code running three example
+interactive prompt or REPL: the specification asks for a block of code running three example
 queries, so the entry point is a script rather than a session.
 
 **Running without a key.** With no `OPENAI_API_KEY` the agent prints
@@ -202,7 +201,7 @@ Rscript <path/to/script.R> > <folder>/run_log.txt 2>&1
 ```
 
 `2>&1` merges stderr into stdout, so the log records warnings and errors rather than only
-the happy path. The logs are graded deliverables: they are tracked in git and explicitly
+the happy path. The logs are deliverables in their own right: they are tracked in git and explicitly
 **not** ignored.
 
 Question 3 has two scripts and so ships two logs (see spec note 10):
@@ -217,7 +216,7 @@ also records the R version, the platform and the exact package versions of that 
 
 ## 6. Environment & reproducibility
 
-- **R version:** the assessment requires R 4.2.0 or above; this repository was
+- **R version:** R 4.2.0 or above, as specified; this repository was
   developed and run on R 4.6.1.
 - **Platform used:** Windows 11 / PowerShell (the log convention above is verified there);
   the commands are identical on macOS and Linux.
@@ -264,9 +263,9 @@ to reverse-engineer it from the code.
 | 2 | Q3 | Table rows: `AETERM` **or** `AESOC` — the spec permits either. | **Both, nested: `AESOC` rows with `AETERM` beneath them.** Used both, nested — `AESOC` as grouping rows with `AETERM` preferred terms underneath, matching the FDA Table 10 layout in the sample output. The 230 distinct `AETERM` values in the TEAE subset would be an unreadable flat table on their own; the 23 system organ classes give it structure. `tbl_hierarchical()` supports the nesting natively. |
 | 3 | Q3 | AE incidence counting level | **Subject level, not record level.** Count at subject level, not record level — a subject with five HEADACHE records is one subject with headache. Applies to the summary table and to Plot 2. |
 | 4 | Q3 | Denominator for percentages in the **summary table** | **Subjects per arm from `adsl`, not from `adae`.** Subjects per treatment arm from `pharmaverseadam::adsl`, not subjects with AEs from `adae`. This is why the spec lists `adsl` as a Q3 input. The figures depart from this and follow the supplied sample output instead — see notes 12 and 13. |
-| 5 | Q3 | Confidence interval method for Plot 2 | **Clopper-Pearson, via an established function.** Clopper-Pearson, as stated in the sample output subtitle in the assessment PDF. Use an established function, do not hand-roll. |
+| 5 | Q3 | Confidence interval method for Plot 2 | **Clopper-Pearson, via an established function.** Clopper-Pearson, as stated in the subtitle of the sample output in the specification. Use an established function, do not hand-roll. |
 | 6 | Q1 | `DSSTDY` needs a reference date | **Added `dm` as a supporting input; `RFSTDTC` is the reference date.** The spec lists only `ds_raw` as input, but study day cannot be computed without a subject reference start date, which lives in DM. Added `pharmaversesdtm::dm` as a supporting input and used `RFSTDTC` as the reference date via `derive_study_day()`. Recorded here because it is an input beyond the literal spec. |
-| 7 | Q1 | `DSDECOD` controlled terminology vs reference behaviour | **`assign_ct()` with `C66727`; net output matches the reference exactly.** SDTMIG v3.4 defines `DSDECOD` through three codelists selected by `DSCAT` (NCOMPLT / PROTMLST / OTHEVENT). The assessment supplies only `C66727`, and the reference DS produces `DSDECOD` by upper-casing the collected value. Implemented `assign_ct()` with `C66727` on the dropdown branch to demonstrate CT tooling; free-text reasons are mapped verbatim. Net output matches the reference exactly. `"RANDOMIZED"` is a protocol milestone (PROTMLST family), which is why it is absent from `C66727`. |
+| 7 | Q1 | `DSDECOD` controlled terminology vs reference behaviour | **`assign_ct()` with `C66727`; net output matches the reference exactly.** SDTMIG v3.4 defines `DSDECOD` through three codelists selected by `DSCAT` (NCOMPLT / PROTMLST / OTHEVENT). The specification supplies only `C66727`, and the reference DS produces `DSDECOD` by upper-casing the collected value. Implemented `assign_ct()` with `C66727` on the dropdown branch to demonstrate CT tooling; free-text reasons are mapped verbatim. Net output matches the reference exactly. `"RANDOMIZED"` is a protocol milestone (PROTMLST family), which is why it is absent from `C66727`. |
 | 8 | Q1 | `DSSEQ` sequencing rule | **Raw collection order within subject - not visit, not date.** Subjects have multiple DS records sharing a visit and a date, so a deterministic order was needed. Reverse-engineered against the reference: it sequences purely by collection/entry order within subject (raw row order), not by visit number or date. Subject `01-705-1382` confirms it — its randomization milestone was entered after a later-visit event and the reference preserves that raw order rather than sorting by visit. Implemented as `rec_vars = c("USUBJID", <raw row order>)`. |
 | 9 | Q1 | Unscheduled visit numbers | **Derived from the visit label itself.** Six unscheduled visit labels are absent from the CT `VISITNUM` / `VISIT` codelists. Derived the number from the label itself, following the CT's own precedent `"Unscheduled 3.1" -> 3.1`. 8 records affected. |
 | 10 | Q3 | Number of log files | **Question 3 ships two logs; Questions 1 and 2 one each.** The deliverables list is singular ("A text file/log file") for Questions 1 and 2, which have one script each, and plural ("Text files/log files") for Question 3, the only question with two scripts. Question 3 therefore ships one log per script, `run_log_01.txt` and `run_log_02.txt`; Questions 1 and 2 keep a single `run_log.txt`. |
@@ -292,7 +291,7 @@ bottom.*
 
 ## 9. Ideas for a production version
 
-Scoped out deliberately: the assessment asks for working deliverables, not the
+Scoped out deliberately: the specification asks for working deliverables, not the
 infrastructure that would surround them in a real study.
 
 - **Automated testing.** A `{testthat}` suite for the derivation edge cases — the age-group

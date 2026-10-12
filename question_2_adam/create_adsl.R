@@ -3,7 +3,7 @@
 #
 # Purpose: Build ADSL from SDTM source data using the {admiral} family of
 #          packages and tidyverse tools, with DM as the basis, and derive the
-#          four additional variables requested in the assessment.
+#          four additional variables requested in the specification.
 #
 # Input dataset(s):
 #   - pharmaversesdtm::dm   basis of ADSL, one record per subject
@@ -132,7 +132,7 @@ ex_ext <- ex %>%
   )
 
 # The valid-dose filter (a real dose, or a zero dose that is placebo) comes from
-# the {admiral} ADSL vignette; the assessment text says only "first exposure
+# the {admiral} ADSL vignette; the specification says only "first exposure
 # record". Checked against this extract: no subject's first exposure record is a
 # zero-dose non-placebo, so the two readings give identical output here. The
 # vignette filter is kept because it is the clinically correct definition of a

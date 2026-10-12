@@ -1,4 +1,4 @@
-# Question 4 (bonus) - GenAI clinical data assistant.
+# Question 4 - GenAI clinical data assistant.
 # Versions are the ones this code was written and verified against.
 langchain==1.4.0
 langchain-openai==1.6.0

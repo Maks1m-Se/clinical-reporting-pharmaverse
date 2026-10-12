@@ -1,5 +1,5 @@
 """
-Question 4 (bonus) - GenAI clinical data assistant.
+Question 4 - GenAI clinical data assistant.
 
 Translates a free-text clinical question about an adverse event dataset into a
 structured query, executes it deterministically with pandas, and returns the
@@ -18,7 +18,7 @@ and never touches the result. Everything after the parse is ordinary pandas.
 
 Data note: the input file is named adae.csv, but it is exported from
 pharmaversesdtm::ae - an SDTM AE dataset, not an ADaM ADAE. That mismatch is the
-assessment's own; the file name is kept verbatim as specified. The columns the
+specification's own; the file name is kept verbatim as specified. The columns the
 agent maps onto (AESEV, AETERM, AESOC) all exist in SDTM AE.
 
 Author: Maksim Sendetski

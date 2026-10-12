@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # Title:   Question 3 (Graphs) - Adverse event visualizations with {ggplot2}
 #
-# Purpose: Produce the two adverse event figures requested in the assessment.
+# Purpose: Produce the two adverse event figures requested in the specification.
 #
 # Input dataset(s):
 #   - pharmaverseadam::adae   adverse events (AESEV, AETERM) - ALL records, not
@@ -42,8 +42,8 @@ adsl <- pharmaverseadam::adsl
 # treatment-emergent subset contains 217. The sample therefore describes the
 # unfiltered dataset, and it is the operative specification for these figures.
 #
-# The asymmetry is in the assessment, not introduced here. Each output follows the
-# instruction it was given.
+# The asymmetry comes from the specification, not from this script. Each output
+# follows the instruction it was given.
 
 ae_all <- adae
 
@@ -122,7 +122,7 @@ arm_totals <- sev_counts %>%
 # Label ink is chosen for contrast against the fill the label actually sits on,
 # not against its own severity: MILD's label sits on the pale tint and is drawn
 # dark (contrast 7.4), while the MODERATE and lifted SEVERE labels both sit on
-# the Roche-blue band and are drawn white (contrast 4.6, above the 4.5 needed for
+# the mid-blue band and are drawn white (contrast 4.6, above the 4.5 needed for
 # body text). Carried as a column and mapped through scale_colour_identity() so
 # the colour travels with its row instead of depending on layer row order.
 #
@@ -155,7 +155,7 @@ sev_counts <- sev_counts %>%
 # Stacked rather than grouped: the stack shows both the composition within an arm
 # and the total event burden of that arm in one mark.
 #
-# #007AC2 is Roche's brand blue and anchors the palette. The severity ramp is a
+# The mid blue #007AC2 anchors the palette. The severity ramp is a
 # single hue at three lightness steps - a white tint of the anchor for MILD, the
 # anchor itself for MODERATE, a black shade of it for SEVERE - so severity is
 # encoded by intensity rather than by hue. That is what keeps it readable in
@@ -163,7 +163,7 @@ sev_counts <- sev_counts %>%
 # values 196 / 116 / 66, with adjacent contrast ratios of 2.69 and 2.26, so no
 # viewer has to distinguish colours to read the order.
 
-ROCHE_BLUE <- "#007AC2"
+ANCHOR_BLUE <- "#007AC2"
 
 p_severity <- ggplot(sev_counts, aes(x = ACTARM, y = n_events, fill = AESEV)) +
   geom_col(width = 0.6) +
@@ -180,7 +180,7 @@ p_severity <- ggplot(sev_counts, aes(x = ACTARM, y = n_events, fill = AESEV)) +
     colour = "grey20"
   ) +
   scale_fill_manual(
-    values = c(MILD = "#9ECCE8", MODERATE = ROCHE_BLUE, SEVERE = "#00436B"),
+    values = c(MILD = "#9ECCE8", MODERATE = ANCHOR_BLUE, SEVERE = "#00436B"),
     name = "Severity"
   ) +
   scale_colour_identity() +
@@ -266,8 +266,8 @@ term_levels <- rev(top10$AETERM)
 # Black point and capped error bars, the conventional look for a regulatory
 # forest-style figure. Colour carries no information here - every row is the same
 # kind of quantity - and black holds the thin interval lines against the white
-# panel better than the Roche blue does, so this figure stays monochrome. Plot 1
-# keeps the brand-anchored ramp, where lightness does encode something.
+# panel better than the anchor blue does, so this figure stays monochrome. Plot 1
+# keeps the blue-anchored ramp, where lightness does encode something.
 # geom_errorbar() with orientation = "y" rather than geom_errorbarh(), which is
 # deprecated as of ggplot2 4.0.0 and would put a deprecation warning in the run
 # log.

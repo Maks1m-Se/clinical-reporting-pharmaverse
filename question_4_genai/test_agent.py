@@ -1,5 +1,5 @@
 """
-Question 4 (bonus) - test script.
+Question 4 - test script.
 
 Runs one example question per queryable column and prints the full trace of each:
 the question asked, the QuerySpec the parse produced, whether that parse came from
