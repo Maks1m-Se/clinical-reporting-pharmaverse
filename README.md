@@ -1,4 +1,33 @@
-# Clinical Reporting Project with Pharmaverse
+# Clinical Trial Reporting with Pharmaverse: SDTM, ADaM and TLFs in R
+
+Clinical trial reporting on the CDISC pilot study data (`CDISCPILOT01`), covering each
+stage from raw eCRF to tables and figures, in R with the pharmaverse packages, plus a
+small Python GenAI agent:
+
+- **SDTM:** Disposition (DS) domain built from raw eCRF data with `{sdtm.oak}`, following
+  CDISC SDTMIG v3.4. Matches the pharmaverse reference on all 12 variables, 0 mismatches.
+- **ADaM:** subject-level analysis dataset (ADSL) with `{admiral}`: age groups, treatment
+  start with imputation flag, ITT flag, last known alive date. `TRTSDTM`, `TRTSTMF` and
+  `TRTEDTM` match the pharmaverse reference ADSL, 0 mismatches.
+- **TLF:** treatment-emergent adverse event (TEAE) summary table in the layout of FDA TLG
+  catalogue Table 10 with `{gtsummary}`, and two adverse event figures with `{ggplot2}`,
+  one with exact Clopper-Pearson 95% confidence intervals.
+- **Python:** a LangChain agent that turns free-text questions into validated,
+  deterministic pandas queries.
+
+Every script runs without errors or warnings and ships its console log as evidence. The
+judgement calls behind the derivations are documented in
+[section 7](#7-notes-on-spec-decisions).
+
+**Author:** Dr. Maksim Sendetski · [LinkedIn](https://www.linkedin.com/in/dr-maksim-sendetski-07a18a14b)
+
+<img src="question_3_tlg/ae_summary_table_preview.png" width="100%" alt="First rows of the TEAE summary table: subjects with at least one TEAE per treatment arm, then system organ classes with reported terms nested beneath">
+
+<img src="question_3_tlg/ae_severity_by_treatment.png" width="60%" alt="Stacked bar chart of adverse event records by severity for each treatment arm">
+
+*Top: first rows of the TEAE summary table (full table in
+[`ae_summary_table.html`](question_3_tlg/ae_summary_table.html)). Bottom: adverse event
+records by severity and treatment arm.*
 
 * [1. Overview](#1-overview)
 * [2. Repository structure](#2-repository-structure)
@@ -25,23 +54,11 @@ own. Where the reference holds the same variables, the output is checked against
 0 mismatches: all 12 DS variables in Question 1, and `TRTSDTM`, `TRTSTMF` and `TRTEDTM`
 in Question 2.
 
-This repository contains my solutions to the Analytical Data Science (ADS) Programmer
-Coding Assessment. The assessment covers the pharmaverse ecosystem end to end: building a
-CDISC SDTM Disposition (DS) domain from raw eCRF data with `{sdtm.oak}` (Question 1),
-deriving an ADaM Subject Level Analysis Dataset (ADSL) with `{admiral}` and tidyverse
-tools (Question 2), producing regulatory-style adverse event tables and figures with
-`{gtsummary}` and `{ggplot2}` (Question 3), and — as a bonus — a Python GenAI assistant
-that translates free-text clinical questions into structured pandas queries over an
-adverse event dataset (Question 4). Questions 1–3 are required and written in R;
-Question 4 is the optional Python question. Every R question ships a plain-text run log
-as evidence that the script executes without errors.
-
-> **Status:** All four questions are complete — the three required ones and the optional
-> Python bonus. The built DS domain matches `pharmaversesdtm::ds` on all 12 required
-> variables with 0 mismatches, ADSL carries the four requested derivations, Question 3
-> ships the TEAE summary table and both figures, and the Question 4 agent has been run
-> against a real LLM. Every script runs without errors or warnings, and its log is
-> committed as evidence.
+The project began as a one-week take-home coding assessment for a statistical programming
+role in pharma. That is why it is organised as four questions, why each question starts
+from the inputs the specification prescribed, and why
+[section 7](#7-notes-on-spec-decisions) records where the specification needed
+interpretation.
 
 ## 2. Repository structure
 
@@ -63,6 +80,7 @@ clinical-reporting-pharmaverse/
 ├── question_3_tlg/
 │   ├── 01_create_ae_summary_table.R       TEAE summary table via {gtsummary}
 │   ├── ae_summary_table.html              TEAE table, SOC rows with nested terms
+│   ├── ae_summary_table_preview.png       first rows of the table as PNG, for display here
 │   ├── run_log_01.txt                     console log for the table script
 │   ├── 02_create_visualizations.R         two AE figures via {ggplot2}
 │   ├── run_log_02.txt                     console log for the figures script
