@@ -7,3 +7,8 @@
 *.csv text eol=lf
 *.txt text eol=lf
 *.html linguist-generated=true
+
+# sdtm_ct.csv was committed with CRLF before normalisation was introduced. It is
+# kept byte-identical, so line-ending conversion is switched off for this file;
+# without this, a fresh clone reports it as modified.
+question_1_sdtm/sdtm_ct.csv -text
