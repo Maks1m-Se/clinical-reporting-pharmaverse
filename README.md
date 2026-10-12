@@ -13,13 +13,17 @@
 ## 1. Overview
 
 ```
-raw eCRF  ->  SDTM (Q1)  ->  ADaM (Q2)  ->  TLG (Q3)
-                  |
-                  +->  GenAI agent (Q4)
+raw eCRF  --Q1-->  SDTM  --Q2-->  ADaM  --Q3-->  tables & figures
+                    |
+                    +--Q4-->  GenAI query agent (Python)
 ```
 
-The four questions walk one clinical data flow: each stage
-works on top of the previous one, and the bonus agent branches off the SDTM layer`pharmaversesdtm::ae`.
+The questions follow the clinical data flow, but each one is self-contained: every arrow
+starts from pharmaverse reference data (`pharmaverseraw`, `pharmaversesdtm`,
+`pharmaverseadam`), not from the previous question's output, so each question runs on its
+own. Where the reference holds the same variables, the output is checked against it, with
+0 mismatches: all 12 DS variables in Question 1, and `TRTSDTM`, `TRTSTMF` and `TRTEDTM`
+in Question 2.
 
 This repository contains my solutions to the Analytical Data Science (ADS) Programmer
 Coding Assessment. The assessment covers the pharmaverse ecosystem end to end: building a
