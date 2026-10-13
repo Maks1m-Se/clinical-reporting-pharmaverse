@@ -298,11 +298,12 @@ print(as.data.frame(utils::head(
 # ------------------------------------------------------------------------------
 # 7. Validation
 #
-# Only TRTSDTM and TRTSTMF exist in pharmaverseadam::adsl, so only those can be
-# compared directly. AGEGR9/AGEGR9N/ITTFL have no counterpart there and are
-# checked for internal consistency instead. LSTAVLDT has no counterpart either,
-# but the reference carries LSTALVDT - a different spelling and a different
-# definition - so that one is reported as an agreement rate, not as pass/fail.
+# Only TRTSDTM, TRTSTMF and TRTEDTM exist in pharmaverseadam::adsl, so only
+# those can be compared directly. AGEGR9/AGEGR9N/ITTFL have no counterpart there
+# and are checked for internal consistency instead. LSTAVLDT has no counterpart
+# either, but the reference carries LSTALVDT - a different spelling and a
+# different definition - so that one is reported as an agreement rate, not as
+# pass/fail.
 # ------------------------------------------------------------------------------
 
 cat("\n", strrep("-", 78), "\n", sep = "")

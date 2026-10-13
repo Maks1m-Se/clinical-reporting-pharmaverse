@@ -1,8 +1,9 @@
 # Clinical Trial Reporting with Pharmaverse: SDTM, ADaM and TLFs in R
 
-Clinical trial reporting on the CDISC pilot study data (`CDISCPILOT01`), covering each
-stage from raw eCRF to tables and figures, in R with the pharmaverse packages, plus a
-small Python GenAI agent:
+Selected SDTM and ADaM examples and safety tables and figures on the CDISC pilot study
+data (`CDISCPILOT01`), in R with the pharmaverse packages, plus a small Python GenAI
+agent. Each stage of the clinical data flow is a separate exercise on pharmaverse
+reference data:
 
 - **SDTM:** Disposition (DS) domain built from raw eCRF data with `{sdtm.oak}`, following
   CDISC SDTMIG v3.4. Matches the pharmaverse reference on all 12 variables, 0 mismatches.
@@ -42,17 +43,18 @@ records by severity and treatment arm.*
 ## 1. Overview
 
 ```
-raw eCRF  --Q1-->  SDTM  --Q2-->  ADaM  --Q3-->  tables & figures
-                    |
-                    +--Q4-->  GenAI query agent (Python)
+input (reference data)      output                  tools
+pharmaverseraw   --Q1-->    SDTM DS domain          R, {sdtm.oak}
+pharmaversesdtm  --Q2-->    ADaM ADSL               R, {admiral}
+pharmaverseadam  --Q3-->    TEAE table, 2 figures   R, {gtsummary}, {ggplot2}
+pharmaversesdtm  --Q4-->    free-text query agent   Python, LangChain
 ```
 
-The questions follow the clinical data flow, but each one is self-contained: every arrow
-starts from pharmaverse reference data (`pharmaverseraw`, `pharmaversesdtm`,
-`pharmaverseadam`), not from the previous question's output, so each question runs on its
-own. Where the reference holds the same variables, the output is checked against it, with
-0 mismatches: all 12 DS variables in Question 1, and `TRTSDTM`, `TRTSTMF` and `TRTEDTM`
-in Question 2.
+The four questions follow the clinical data flow but are separate exercises, not a
+chained pipeline: each one starts from pharmaverse reference data, not from the previous
+question's output, and runs on its own. Where the reference holds the same variables,
+the output is checked against it, with 0 mismatches: all 12 DS variables in Question 1,
+and `TRTSDTM`, `TRTSTMF` and `TRTEDTM` in Question 2.
 
 The project began as a one-week take-home coding assessment for a statistical programming
 role in pharma. That is why it is organised as four questions, why each question starts
