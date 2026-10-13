@@ -5,18 +5,19 @@ data (`CDISCPILOT01`), in R with the pharmaverse packages, plus a small Python G
 agent. Each stage of the clinical data flow is a separate exercise on pharmaverse
 reference data:
 
-- **SDTM:** Disposition (DS) domain built from raw eCRF data with `{sdtm.oak}`, following
-  CDISC SDTMIG v3.4. Matches the pharmaverse reference on all 12 variables, 0 mismatches.
-- **ADaM:** subject-level analysis dataset (ADSL) with `{admiral}`: age groups, treatment
-  start with imputation flag, ITT flag, last known alive date. `TRTSDTM`, `TRTSTMF` and
-  `TRTEDTM` match the pharmaverse reference ADSL, 0 mismatches.
-- **TLF:** treatment-emergent adverse event (TEAE) summary table in the layout of FDA TLG
-  catalogue Table 10 with `{gtsummary}`, and two adverse event figures with `{ggplot2}`,
-  one with exact Clopper-Pearson 95% confidence intervals.
-- **Python:** a LangChain agent that turns free-text questions into validated,
+- **SDTM:** Disposition (DS) domain from raw eCRF data with `{sdtm.oak}` (SDTMIG v3.4);
+  all 12 variables match the pharmaverse reference, 0 mismatches.
+- **ADaM:** ADSL with `{admiral}`: age groups, treatment start with imputation flag, ITT
+  flag, last known alive date; `TRTSDTM`, `TRTSTMF`, `TRTEDTM` match the reference.
+- **TLF:** TEAE summary table in FDA TLG catalogue Table 10 layout with `{gtsummary}`; two
+  adverse event figures with `{ggplot2}`, one with exact Clopper-Pearson 95% CIs.
+- **Python:** LangChain agent that turns free-text questions into schema-checked,
   deterministic pandas queries.
 
-Every script runs without errors or warnings and ships its console log as evidence. The
+Every script runs without errors or warnings and ships its console log as evidence
+([Q1](question_1_sdtm/run_log.txt), [Q2](question_2_adam/run_log.txt),
+[Q3 table](question_3_tlg/run_log_01.txt), [Q3 figures](question_3_tlg/run_log_02.txt),
+[Q4](question_4_genai/run_log.txt)); the R logs end with validation checks. The 15
 judgement calls behind the derivations are documented in
 [section 7](#7-notes-on-spec-decisions).
 
@@ -24,11 +25,13 @@ judgement calls behind the derivations are documented in
 
 <img src="question_3_tlg/ae_summary_table_preview.png" width="100%" alt="First rows of the TEAE summary table: subjects with at least one TEAE per treatment arm, then system organ classes with reported terms nested beneath">
 
-<img src="question_3_tlg/ae_severity_by_treatment.png" width="60%" alt="Stacked bar chart of adverse event records by severity for each treatment arm">
+<img src="question_3_tlg/ae_severity_by_treatment.png" width="49%" alt="Stacked bar chart of adverse event records by severity for each treatment arm"> <img src="question_3_tlg/ae_top10_incidence_ci.png" width="49%" alt="Dot plot of the ten most frequent adverse event terms with exact 95% confidence intervals">
 
 *Top: first rows of the TEAE summary table (full table in
-[`ae_summary_table.html`](question_3_tlg/ae_summary_table.html)). Bottom: adverse event
-records by severity and treatment arm.*
+[`ae_summary_table.html`](question_3_tlg/ae_summary_table.html)). Bottom left: adverse
+event records by severity and treatment arm. Bottom right: the ten most frequent adverse
+event terms, as a percentage of the 225 subjects with at least one adverse event
+([note 13](#7-notes-on-spec-decisions) explains this denominator).*
 
 * [1. Overview](#1-overview)
 * [2. Repository structure](#2-repository-structure)
